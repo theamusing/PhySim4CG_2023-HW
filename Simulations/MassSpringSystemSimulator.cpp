@@ -231,7 +231,7 @@ void MassSpringSystemSimulator::test()
 	//addSpring(p1, p2, 1);
 
 	
-	int num = 4;
+	int num = 6;
 	addMassPoint(Vec3(0, 0.1, 0), Vec3(0, 0, 0), false);
 	addMassPoint(Vec3(0, -0.1, 0), Vec3(0, 0, 0), false);
 	for(int i = 0; i < num; i++)
@@ -245,7 +245,7 @@ void MassSpringSystemSimulator::test()
 		for (int j = i + 1; j < num * (num / 2 - 1) + 2; j++)
 		{
 			float length = norm(pointList[i].position - pointList[j].position);
-			if(length < 1.f)
+			if(length <= 0.1f)
 				addSpring(i, j, length);
 		}
 			
