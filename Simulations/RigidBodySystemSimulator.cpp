@@ -22,6 +22,14 @@ void RigidBodySystemSimulator::reset()
 	RigidBodyList.clear();
 	m_externalForce = Vec3(0.0f);
 	g = Vec3(0.0f, 0.0f, 0.0f);
+	//addRigidBody(Vec3(-0.1f, -0.2f, 0.1f), Vec3(0.4f, 0.2f, 0.2f), 100.0f);
+
+	//addRigidBody(Vec3(0.0f, 0.2f, 0.0f), Vec3(0.4f, 0.2f, 0.2f), 100.0);
+	//setOrientationOf(1, Quat(Vec3(0.0f, 0.0f, 1.0f), (float)(M_PI) * 0.25f));
+	//setVelocityOf(1, Vec3(0.0f, -0.1f, 0.05f));
+	//applyForceOnBody(0, Vec3(0.0, 0.0f, 0.0), Vec3(0, 0, 200));
+	//for (int i = 0; i < 4; i++)
+	//	simulateTimestep(0.1);
 }
 void RigidBodySystemSimulator::drawFrame(ID3D11DeviceContext* pd3dImmediateContext)
 {
@@ -89,7 +97,6 @@ void RigidBodySystemSimulator::externalForcesCalculations(float timeElapsed)
 	default:
 		break;
 	}
-
 }
 void RigidBodySystemSimulator::simulateTimestep(float timeStep)
 {
@@ -103,14 +110,13 @@ void RigidBodySystemSimulator::simulateTimestep(float timeStep)
 		Vec3 Torque = Vec3(0.0f);
 		Mat4d RotMat_T = RotMat;
 		RotMat_T.transpose();
-		Mat4 inertia_cur = RotMat * RigidBodyList[i].inertia * RotMat_T;
+		Mat4 inertia_cur = RotMat_T * RigidBodyList[i].inertia * RotMat;
 		for each (auto force in RigidBodyList[i].external_forces)
 		{
 			RigidBodyList[i].velocity += force.force / RigidBodyList[i].mass * timeStep;			
-			Torque += cross(RotMat.transformVector(force.loc - RigidBodyList[i].position), force.force);
+			Torque += cross(force.loc - RigidBodyList[i].position, force.force);
 		}
 		RigidBodyList[i].velocity += g * timeStep;//apply gravity
-
 		RigidBodyList[i].angular_velocity += inertia_cur.inverse().transformVector(Torque) * timeStep;
 		Quat Rot_cur;
 		Vec3 W_cur = RigidBodyList[i].angular_velocity * timeStep / 2;

@@ -32,7 +32,7 @@ struct RigidBody
 		velocity = Vec3(0.0);
 		angular_velocity = Vec3(0.0);
 		external_forces.clear();
-		inertia.initScaling(size.y * size.y + size.z * size.z, size.x * size.x + size.z + size.z, size.x + size.x + size.y + size.y);
+		inertia.initScaling(size.y * size.y + size.z * size.z, size.x * size.x + size.z * size.z, size.x * size.x + size.y * size.y);
 		inertia = inertia / 12.0f * mass;
 	}
 	Mat4 WorldMat()
