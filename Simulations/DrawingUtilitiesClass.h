@@ -397,6 +397,28 @@ void DrawTriangleUsingShaders()
 	g_pd3dImmediateContext->Draw(3, 0);
 }
 
+void DrawTriangle(Vec3 pos1, Vec3 pos2, Vec3 pos3)
+{
+    Vec3 N = cross(pos1 - pos2, pos3 - pos2);
+    N = N / norm(N);
+    g_pEffectPositionNormal->Apply(g_pd3dImmediateContext);
+    g_pd3dImmediateContext->IASetInputLayout(g_pInputLayoutPositionNormal);
+
+    g_pPrimitiveBatchPositionNormal->Begin();
+    g_pPrimitiveBatchPositionNormal->DrawTriangle(
+        VertexPositionNormal(XMFLOAT3(pos1.x, pos1.y, pos1.z), XMFLOAT3(N.x, N.y, N.z)),
+        VertexPositionNormal(XMFLOAT3(pos2.x, pos2.y, pos2.z), XMFLOAT3(N.x, N.y, N.z)),
+        VertexPositionNormal(XMFLOAT3(pos3.x, pos3.y, pos3.z), XMFLOAT3(N.x, N.y, N.z))
+    );
+    g_pPrimitiveBatchPositionNormal->DrawTriangle(
+        VertexPositionNormal(XMFLOAT3(pos1.x, pos1.y, pos1.z), XMFLOAT3(N.x, N.y, N.z)),
+        VertexPositionNormal(XMFLOAT3(pos3.x, pos3.y, pos3.z), XMFLOAT3(N.x, N.y, N.z)),
+        VertexPositionNormal(XMFLOAT3(pos2.x, pos2.y, pos2.z), XMFLOAT3(N.x, N.y, N.z))
+    );
+    g_pPrimitiveBatchPositionNormal->End();
+
+}
+
 void beginLine()
 {
 	g_pEffectPositionColor->SetWorld(g_camera.GetWorldMatrix());

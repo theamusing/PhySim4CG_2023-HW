@@ -17,6 +17,16 @@ public:
 	float currentLength;
 };
 
+class Volume {
+public:
+	int point1;
+	int point2;
+	int point3;
+	int point4;
+	float stiffness;
+	float V;
+};
+
 class Point {
 public:
 	Vec3 position;
@@ -50,6 +60,7 @@ public:
 	void setDampingFactor(float damping);
 	int addMassPoint(Vec3 position, Vec3 Velocity, bool isFixed);
 	void addSpring(int masspoint1, int masspoint2, float initialLength);
+	void addVolume(int masspoint1, int masspoint2, int masspoint3, int masspoint4);
 	int getNumberOfMassPoints();
 	int getNumberOfSprings();
 	Vec3 getPositionOfMassPoint(int index);
@@ -69,6 +80,7 @@ private:
 	int m_iIntegrator;
 	vector<Point> pointList;
 	vector<Spring> springList;
+	vector<Volume> volumeList;
 
 	// UI Attributes
 	Vec3 m_externalForce;
